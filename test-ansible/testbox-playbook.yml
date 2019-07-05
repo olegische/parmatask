@@ -5,6 +5,12 @@
     - name: install apache2
       package: name=httpd state=present
 
+    - name: Start httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
     - name: Add http service in firewalld
       firewalld:
         service: http
