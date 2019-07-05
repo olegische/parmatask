@@ -1,0 +1,11 @@
+- include: tasks/sudo-subtasks.yml
+  with_items: "{{ admins }}"
+
+- include: tasks/sshkeysroot-subtasks.yml
+
+- include: tasks/sshkeys-subtasks.yml
+  with_items: "{{ admins }}"
+
+- include: tasks/hostfile-subtasks.yml
+  tags:
+  - hostfile

@@ -1,0 +1,5 @@
+- name: Install epel with yum
+  yum: name=epel-release state=present
+
+- name: Install ansible package
+  package: name=ansible state=present

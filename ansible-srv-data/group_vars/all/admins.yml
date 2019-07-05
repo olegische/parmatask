@@ -1,0 +1,5 @@
+sudoers_path: /etc/sudoers
+admins:
+ - { username: ansible, fullname: Ansible service }
+ - { username: olegdeb, fullname: Oleg Rom }
+ - { username: jenkins, fullname: Jenkins service }

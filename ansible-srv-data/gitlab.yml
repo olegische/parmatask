@@ -1,0 +1,6 @@
+- name: configure and deploy gitlab servers
+  hosts: gitlab
+  remote_user: root
+
+  roles:
+    - gitlab

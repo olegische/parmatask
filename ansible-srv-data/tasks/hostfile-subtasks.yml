@@ -1,0 +1,7 @@
+- name: Copy host file with owner and permissions
+  copy:
+    src: /etc/hosts
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644

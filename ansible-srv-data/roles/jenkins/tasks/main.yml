@@ -1,0 +1,33 @@
+- name: Install Java with yum
+  yum: name=java state=present
+
+- name: Add the Jenkins repository to the yum repos
+  yum_repository:
+    name: jenkins
+    description: Jenkins-stable
+    baseurl: http://pkg.jenkins-ci.org/redhat-stable
+    gpgcheck: yes
+    gpgkey: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+- name: Install Jenkins with yum
+  yum: name=jenkins state=present
+
+- name: Start Jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
+- name: Open 8080 port with firewalld
+  firewalld:
+    port: 8080/tcp
+    permanent: yes
+    zone: public
+    state: enabled
+
+- name: Reload firewalld
+  shell: firewall-cmd --reload
+
+- include: tasks/hostfile-subtasks.yml
+- include: tasks/ansible-subtasks.yml
+- include: tasks/git-subtasks.yml

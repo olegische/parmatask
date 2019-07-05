@@ -1,0 +1,2 @@
+- name: Install git package
+  package: name=git state=present

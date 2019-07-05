@@ -1,0 +1,23 @@
+- name: apply tasts to testbox
+  hosts: testbox
+  remote_user: root
+  tasks:
+    - name: install apache2
+      package: name=httpd state=present
+
+    - name: Add http service in firewalld
+      firewalld:
+        service: http
+        permanent: yes
+        zone: public
+        state: enabled
+
+    - name: Add https service in firewalld
+      firewalld:
+        service: https
+        permanent: yes
+        zone: public
+        state: enabled
+
+    - name: Reload firewalld
+      shell: firewall-cmd --reload

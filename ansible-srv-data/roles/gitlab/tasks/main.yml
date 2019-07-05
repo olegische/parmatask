@@ -1,0 +1,65 @@
+- name: Checking to make sure postfix and co is installed
+  yum:
+    name:
+    - postfix
+    - ca-certificates
+    - curl
+    - openssh-server
+    - policycoreutils-python
+    state: present
+
+- name: Ensure sshd is running and starts on boot
+  service: name=sshd state=started enabled=true
+
+- name: Ensure Postfix is running and starts on boot
+  service: name=postfix state=started enabled=true
+
+- name: Add http service in firewalld
+  firewalld:
+    service: http
+    permanent: yes
+    zone: public
+    state: enabled
+
+- name: Add https service in firewalld
+  firewalld:
+    service: https
+    permanent: yes
+    zone: public
+    state: enabled
+
+- name: Reload firewalld
+  shell: firewall-cmd --reload
+
+- name: Get GitLab repository script
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+    dest: /tmp/script.rpm.sh
+    mode: 0777
+
+- name: Run GitLab repository script
+  shell: /tmp/script.rpm.sh
+
+- name: Install GitLab CE
+  package:
+    name:    
+    - gitlab-ce
+    state: present 
+  environment:
+    EXTERNAL_URL: http://gitlabtest.localdomain
+
+# Start and configure GitLab. Sometimes the first run fails, but after that,
+# restarts fix problems, so ignore failures on this run.
+- name: Reconfigure GitLab (first run)
+  command: gitlab-ctl reconfigure
+  failed_when: false
+
+- name: Restart GitLab
+  command: gitlab-ctl restart
+
+- name: gitlab-runsvdir status
+  command: systemctl status gitlab-runsvdir
+
+- include: tasks/hostfile-subtasks.yml
+  tags:
+  - hostfile

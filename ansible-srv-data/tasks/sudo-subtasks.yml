@@ -1,0 +1,20 @@
+- name: Install sudo package
+  package: name=sudo state=present
+
+- name: create personal groups for admins
+  group: name={{ item.username }}
+
+- name: Create admin accounts
+  user:
+    name: "{{ item.username }}"
+    comment: "{{ item.fullname }}"
+    group: "{{ item.username }}"
+    groups: wheel
+
+- name: Install sudoers file
+  template:
+    dest: "{{ sudoers_path }}"
+    src: sudoers.j2
+    owner: root
+    group: wheel
+    mode: 0600

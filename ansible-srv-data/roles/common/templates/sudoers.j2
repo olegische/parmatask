@@ -1,0 +1,4 @@
+Defaults env_keep += "HOME"
+{% for admin in admins %}
+{{ admin.username }} ALL=(ALL) ALL
+{% endfor %}
