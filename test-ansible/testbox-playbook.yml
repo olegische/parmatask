@@ -46,7 +46,7 @@
 
     - name: Copy testbox.conf
       copy:
-        src: web-app/testbox.conf
+        src: ../web-app/testbox.conf
         dest: /etc/httpd/conf.d/testbox.conf
         owner: root
         group: root
@@ -54,7 +54,7 @@
 
     - name: Copy hello.wsgi
       copy:
-        src: web-app/wsgi-scripts/hello.wsgi
+        src: ../web-app/wsgi-scripts/hello.wsgi
         dest: /var/www/wsgi-scripts/hello.wsgi
         owner: root
         group: root
