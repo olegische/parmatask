@@ -5,6 +5,9 @@
     - name: install apache2
       package: name=httpd state=present
 
+    - name: install mod_wsgi
+      package: name=mod_wsgi state=present
+
     - name: Start httpd
       service:
         name: httpd
