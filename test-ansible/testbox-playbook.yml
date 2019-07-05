@@ -27,3 +27,38 @@
 
     - name: Reload firewalld
       shell: firewall-cmd --reload
+
+    - name: Create web documents dir
+      file:
+        path: /var/www/html/testbox
+        state: directory
+        owner: root
+        group: root
+        mode: 0655
+
+    - name: Create wsgi-scripts dir
+      file:
+        path: /var/www/wsgi-scripts
+        state: directory
+        owner: root
+        group: root
+        mode: 0655
+
+    - name: Copy testbox.conf
+      copy:
+        src: ./web-app/testbox.conf
+        dest: /etc/httpd/conf.d/testbox.conf
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Copy hello.wsgi
+      copy:
+        src: ./web-app/wsgi-scripts/hello.wsgi
+        dest: /var/www/wsgi-scripts/hello.wsgi
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Restart httpd
+      shell: systemctl restart httpd
