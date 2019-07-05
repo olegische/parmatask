@@ -226,6 +226,7 @@ do
         done < "./tmp/hosts"
 
         if [ -f "./tmp/ansible_hosts" ]; then
+            cp "./tmp/ansible_hosts" "./test-ansible/hosts"
             rsync -arv --rsh="sshpass -p $( cat ./passwd/root."$vm_name") ssh -o StrictHostKeyChecking=no -l root"\
                 --progress "./tmp/ansible_hosts" root@$vm_name:"/etc/ansible/hosts"
             rm -f "./tmp/ansible_hosts"
