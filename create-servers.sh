@@ -66,8 +66,11 @@ fi
 os_type=$1
 test $# -gt 0 && shift
 
+if [ "$os_type" != "centos7.0" ]; then
+    error Use centos7.0 source OS type
+fi
+
 # Sanity checks for error conditions
-echo $VM_SOURCE_DIR_PATH
 if [ ! -d $VM_SOURCE_DIR_PATH ]; then
     error No source path found. Pleace, check ./conf.d/task.conf file
 elif [ ! -d $VM_DIR_PATH ]; then

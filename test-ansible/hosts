@@ -3,4 +3,4 @@ gitlabtest
 [jenkins]
 jenkinstest
 [test]
-testbox
+testbox*
