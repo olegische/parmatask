@@ -30,8 +30,12 @@ Ansible playbook: На узел testbox устанавливает любой в
 
 ### Требования к исходнику для клонирования ВМ:
 - установлен и запущен sshd сервис
+- ВМ содержит одно блочное устройство /dev/vdb
 - swap раздел на отдельном lvm логическом томе.
 - swap раздел должен присутствовать и быть задействован.
+
+### Наименование ВМ.
+Скрипты взаимодействуют с четырьмя обязательными ВМ с именами ansible*, gutlab*, jenkins*, testbox*.
 
 Для подключения к созданным ВМ по ssh должен быть указан пароль root исходника в файле .passwd/root.<source_type_name>
 
@@ -39,6 +43,7 @@ Ansible playbook: На узел testbox устанавливает любой в
 
 Конфигурация скриптов производится в файлах каталога conf.d
 
+Последовательность запуска скриптов: create-servers.sh, config-servers.sh, start-servers.sh, start-ansible.sh.
 
 
 С помощью create-servers.sh были созданы серверы ansibletest, jenkinstest, gitlabtest, testbox. 

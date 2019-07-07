@@ -95,6 +95,6 @@ done
 create_servers_fn $@
 
 echo "Please, configure <vcpu> in xml file for new VMs"
-echo "WARNING! Please, check ./tmp/hosts file sanity"
+echo "WARNING! Please, check $TMP_HOSTS_FILE_PATH file sanity"
 
 exit 0

@@ -5,13 +5,10 @@
 # Usage:
 # start-servers.sh [--?] [--help] [--version]
 
-VM_DIR_PATH="/mnt/homelab/libvirt"
+source ./lib/support_fn.sh
 
-error( )
-{
-    echo "$@" 1>&2
-    usage_and_exit 1
-}
+source ./conf.d/task.conf
+
 usage( )
 {
     cat <<EOF
@@ -22,40 +19,6 @@ Usage:
         [ --version ]
 EOF
 }
-
-usage_and_exit( )
-{
-    usage
-    exit $1
-}
-version( )
-{
-    echo "$PROGRAM version $VERSION"
-}
-
-host_availible( )
-{
-    while ! ping -q -c 1 $1
-    do
-        sleep 5
-    done
-    echo "Connected to $1 - `date`"
-}
-
-host_unavailible( )
-{
-    while ping -q -c 1 $1
-    do
-        sleep 5
-    done
-    echo "Disconnected from $1 - `date`"
-}
-
-ssh_expect ( )
-{
-    ./subscripts/ssh_expect.sh root $( cat ./passwd/root."$1") "$1" "$2" "$3"
-}
-
 
 PROGRAM=`basename $0`
 VERSION=1.0
@@ -84,8 +47,8 @@ done
 
 # Sanity checks for error conditions
 # No sanity check for ./tmp/hosts
-if [ ! -f "./tmp/hosts" ]; then
-    error No "./tmp/hosts" file
+if [ ! -f $TMP_HOSTS_FILE_PATH ]; then
+    error No $TMP_HOSTS_FILE_PATH file
 fi
 
 # Start servers
@@ -112,6 +75,6 @@ do
     host_availible $vm_name
     sleep 5
     unset vm_name
-done < "./tmp/hosts"
+done < $TMP_HOSTS_FILE_PATH
 
 exit 0
