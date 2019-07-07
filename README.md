@@ -64,7 +64,7 @@ Allow requests to the local network from hooks and services.
 8. Jenkins: Создать credentials для пользователя проекта на GitLab. Можно по логину и паролю.
 8. Jenkins: Создать credentials для пользователя root на Jenkins c добавлением приватного ключа SSH. Проконтролировать возможность подключения по этому ключу на ВМ testbox.
 9. Jenkins: Устанавливаем плагины Jenkins Ansible, Git, GitLab Hook, GitLab. Плагин GitLab не установится (ошибка java.net.SocketTimeoutException: connect timed out), необходимо скачать плагин на диск и установить через Manage Jenkins --> Plugin manager --> advanced --> upload plugin.
-10: Jenkins: Настраиваем плагин GitLab в Manage Jenkins -> Configure System. Используем Access API Token. Для теста можно отключить опцию "Enable authentication for '/project' end-point".
+10. Jenkins: Настраиваем плагин GitLab в Manage Jenkins -> Configure System. Используем Access API Token. Для теста можно отключить опцию "Enable authentication for '/project' end-point".
 11. Jenkins: Настраиваем плагин Ansible в Manage Jenkins --> Global Tool Configuration.
 12. Jenkins: Создаем новую job типа freestyle job. Файл конфигурации ./test-ansible/test-ansible-jenkins-job-config.
     1. Настраиваем доступ к репозиторию на GitLab с использованием credentials разработчика. 
