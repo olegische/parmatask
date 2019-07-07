@@ -5,7 +5,7 @@
 # Usage:
 # start-ansible.sh [--?] [--help] [--version]
 
-LIBVIRT_DIR="/mnt/homelab/libvirt"
+VM_DIR_PATH="/mnt/homelab/libvirt"
 
 error( )
 {

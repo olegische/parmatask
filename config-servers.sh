@@ -5,7 +5,7 @@
 # Usage:
 # config-servers.sh [--?] [--help] [--version]
 
-LIBVIRT_DIR="/mnt/homelab/libvirt"
+VM_DIR_PATH="/mnt/homelab/libvirt"
 
 error( )
 {
@@ -113,28 +113,28 @@ do
 # Sanity checks for error conditions
     if test -z "$vm_name"; then
         error VM name missing or empty
-    elif [ ! -f "$LIBVIRT_DIR/images/$vm_name.img" ]; then
-        error No $vm_name img file in $LIBVIRT_DIR. Try create-vm.sh
-    elif [ ! -f "$LIBVIRT_DIR/xmls/$vm_name.xml" ]; then
-        error No $vm_name xml file in $LIBVIRT_DIR. Try create-vm.sh
+    elif [ ! -f "$VM_DIR_PATH/images/$vm_name.img" ]; then
+        error No $vm_name img file in $VM_DIR_PATH. Try create-vm.sh
+    elif [ ! -f "$VM_DIR_PATH/xmls/$vm_name.xml" ]; then
+        error No $vm_name xml file in $VM_DIR_PATH. Try create-vm.sh
     elif [ ! -f "./passwd/root.$vm_name" ]; then
         error No root.$vm_name file in ./passwd directory
     fi
 
 
     sudo virsh undefine $vm_name
-    sudo virsh define $LIBVIRT_DIR/xmls/$vm_name.xml
+    sudo virsh define $VM_DIR_PATH/xmls/$vm_name.xml
 
     if [[ $vm_name == gitlab* ]]
     then
-        if [ ! -f "$LIBVIRT_DIR/images/$vm_name-swap.img" ]; then
+        if [ ! -f "$VM_DIR_PATH/images/$vm_name-swap.img" ]; then
 # Increase RAM and swap for gitlab
-            sudo dd if=/dev/zero of=$LIBVIRT_DIR/images/$vm_name-swap.img bs=1M count=$(( 1024 * 3 ))
+            sudo dd if=/dev/zero of=$VM_DIR_PATH/images/$vm_name-swap.img bs=1M count=$(( 1024 * 3 ))
             sudo virsh setmaxmem $vm_name $(( 1024 * 4 ))M
             sudo virsh start $vm_name
             sudo virsh setmem $vm_name $(( 1024 * 4 ))M
-            sudo virsh attach-disk $vm_name $LIBVIRT_DIR/images/$vm_name-swap.img vdb --cache none ;\
-            sudo sh -c "virsh dumpxml $vm_name > $LIBVIRT_DIR/xmls/$vm_name.xml"
+            sudo virsh attach-disk $vm_name $VM_DIR_PATH/images/$vm_name-swap.img vdb --cache none ;\
+            sudo sh -c "virsh dumpxml $vm_name > $VM_DIR_PATH/xmls/$vm_name.xml"
 
             host_availible $vm_name
             sleep 5

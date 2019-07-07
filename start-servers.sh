@@ -5,7 +5,7 @@
 # Usage:
 # start-servers.sh [--?] [--help] [--version]
 
-LIBVIRT_DIR="/mnt/homelab/libvirt"
+VM_DIR_PATH="/mnt/homelab/libvirt"
 
 error( )
 {
@@ -97,16 +97,16 @@ do
 # Sanity checks for error conditions
     if test -z "$vm_name"; then
         error VM name missing or empty
-    elif [ ! -f "$LIBVIRT_DIR/images/$vm_name.img" ]; then
-        error No $vm_name img file in $LIBVIRT_DIR. Try create-vm.sh
-    elif [ ! -f "$LIBVIRT_DIR/xmls/$vm_name.xml" ]; then
-        error No $vm_name xml file in $LIBVIRT_DIR. Try create-vm.sh
+    elif [ ! -f "$VM_DIR_PATH/images/$vm_name.img" ]; then
+        error No $vm_name img file in $VM_DIR_PATH. Try create-vm.sh
+    elif [ ! -f "$VM_DIR_PATH/xmls/$vm_name.xml" ]; then
+        error No $vm_name xml file in $VM_DIR_PATH. Try create-vm.sh
     elif [ ! -f "./passwd/root.$vm_name" ]; then
         error No root.$vm_name file in ./passwd directory
     fi
 
     sudo virsh undefine $vm_name
-    sudo virsh define $LIBVIRT_DIR/xmls/$vm_name.xml
+    sudo virsh define $VM_DIR_PATH/xmls/$vm_name.xml
     sudo virsh start $vm_name
 
     host_availible $vm_name
