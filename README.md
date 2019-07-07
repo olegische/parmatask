@@ -39,8 +39,8 @@ Ansible playbook: На узел testbox устанавливает любой в
 - Файл образа в формате img. 
 - Установлен и запущен sshd сервис
 - ВМ содержит одно блочное устройство /dev/vdb
-- swap раздел на отдельном lvm логическом томе.
-- swap раздел должен присутствовать и быть задействован.
+- Swap раздел на отдельном lvm логическом томе.
+- Swap раздел должен присутствовать и быть задействован.
 
 ### Требование к наименованию ВМ.
 Скрипты взаимодействуют с четырьмя ВМ с именами ansible*, gutlab*, jenkins*, testbox*.
@@ -49,26 +49,26 @@ Ansible playbook: На узел testbox устанавливает любой в
 - Для подключения к созданным ВМ по ssh должен быть указан пароль root исходника в файле .passwd/root.<source_type_name>.
 - Все скрипты поддерживают команду --help.
 - Конфигурация скриптов производится в файлах каталога conf.d.
-- На машину разработчика склонировать репозиторий https://github.com/olegische/parmatask.git.
-- Изменить файл .test-ansible/hosts в соответствии с настройкой на сервере Ansible (/etc/ansible/hosts).
+- На машину разработчика клонируем репозиторий https://github.com/olegische/parmatask.git.
+- Изменяем файл .test-ansible/hosts в соответствии с настройкой на сервере Ansible (/etc/ansible/hosts).
 
 ### Ручная настройка Jenkins и GitLab для взаимной интеграции.
-1. На настроенных серверах GitLab и Jenkins нужно создать пользователя проекта.
-2. GitLab: под пользователем root включить опцию Admin Area --> Settings --> Network --> Outbound requests -->
+1. На настроенных серверах GitLab и Jenkins создаем пользователя проекта.
+2. GitLab: под пользователем root включаем опцию Admin Area --> Settings --> Network --> Outbound requests -->
 Allow requests to the local network from hooks and services.
-3. GitLab: авторизоваться под созданным пользователем и создать проект parmatask без создания readme.md.
-4. GitLab: Добавить пользователю SSH ключ, для подключения с машины разработчика.
-5. GitLab: Отключить Auto DevOps.
-6. GitLab: Операцией push добавить файлы проекта с машины разработчика в проект parmatask на GitLab.
-7. GitLab: Получить Access API Token для доступа к репозиторию пользователя: Profile Settings -- Access Token.
-8. Jenkins: Создать credentials для пользователя проекта на GitLab. Можно по логину и паролю.
-8. Jenkins: Создать credentials для пользователя root на Jenkins c добавлением приватного ключа SSH. Проконтролировать возможность подключения по этому ключу на ВМ testbox.
+3. GitLab: Авторизовываемся под созданным пользователем и создаем проект parmatask без создания readme.md.
+4. GitLab: Добавляем пользователю SSH ключ, для подключения с машины разработчика.
+5. GitLab: Отключаем Auto DevOps.
+6. GitLab: Командой git push добваляем файлы проекта с машины разработчика в проект parmatask на GitLab.
+7. GitLab: Получаем Access API Token для доступа к репозиторию пользователя: Profile Settings -- Access Token.
+8. Jenkins: Создаем credentials для пользователя проекта на GitLab. Можно по логину и паролю.
+8. Jenkins: Создаем credentials для пользователя root на Jenkins c добавлением приватного ключа SSH. Контролируем возможность подключения по этому ключу на ВМ testbox.
 9. Jenkins: Устанавливаем плагины Jenkins Ansible, Git, GitLab Hook, GitLab. Плагин GitLab не установится (ошибка java.net.SocketTimeoutException: connect timed out), необходимо скачать плагин на диск и установить через Manage Jenkins --> Plugin manager --> advanced --> upload plugin.
 10. Jenkins: Настраиваем плагин GitLab в Manage Jenkins -> Configure System. Используем Access API Token. Для теста можно отключить опцию "Enable authentication for '/project' end-point".
 11. Jenkins: Настраиваем плагин Ansible в Manage Jenkins --> Global Tool Configuration.
-12. Jenkins: Создаем новую job типа freestyle job. Файл конфигурации ./test-ansible/test-ansible-jenkins-job-config.
+12. Jenkins: Создаем новую job типа freestyle job. Готовый файл конфигурации можно посмотреть в репозитории по адресу ./test-ansible/test-ansible-jenkins-job-config.
     1. Настраиваем доступ к репозиторию на GitLab с использованием credentials разработчика. 
     2. GitLab: Добавляем к проекту webhook (Settings --> Integration).
-    3. Добавить build step Ansible с настройками path: ${WORKSPACE}/test-playbook.yml, host list: ${WORKSPACE}/hosts, для доступа к testbox указать credentials пользователя root на jenkins сервере.
-13. Запустить новый build. 
-14. Проверить тестовое приложение на testbox по адресу http://testbox/hello.
+    3. Добавляем build step Ansible с настройками path: ${WORKSPACE}/test-playbook.yml, host list: ${WORKSPACE}/hosts, для доступа к testbox указываем credentials пользователя root на jenkins сервере.
+13. Запускаем новый build. 
+14. Проверяем тестовое приложение на testbox по адресу http://testbox/hello.
